@@ -1,0 +1,1 @@
+pyuic5 RegDialog.ui -o RegDialog.py
