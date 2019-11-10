@@ -63,10 +63,16 @@ class DB:
         self.__only_watching = status
 
     def episode_score_update(self, data: Episode, value: int):
-        self.__query.exec(f'exec ReviewEpisode {self.__id}, {data.id}, {value}')
+        if value is None:
+            self.__query.exec(f'exec ReviewEpisode {self.__id}, {data.id}')
+        else:
+            self.__query.exec(f'exec ReviewEpisode {self.__id}, {data.id}, {value}')
 
     def show_score_update(self, data: Show, value: int):
-        self.__query.exec(f'exec ReviewShow {self.__id}, {data.show_id}, {value}')
+        if value is None:
+            self.__query.exec(f'exec ReviewShow {self.__id}, {data.show_id}')
+        else:
+            self.__query.exec(f'exec ReviewShow {self.__id}, {data.show_id}, {value}')
 
     def get_score(self, data):
         if type(data) is Episode:
