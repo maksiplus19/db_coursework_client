@@ -22,29 +22,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.db = DB()
         self.data = None
 
-        welcome = Ui_WelcomeDialog()
-        if welcome.exec_() == 0:
-            exit(0)
-        else:
-            if welcome.newUser is False:
-                dialog = Ui_AuthDialog()
-                if dialog.exec_() == 0:
-                    exit(0)
-
-                while dialog.l is None or dialog.p is None or not self.db.authorise(dialog.l, dialog.p):
-                    QMessageBox.critical(self, 'Ошибка', 'Не удалось авторизоваться')
-                    if dialog.exec_() == 0:
-                        exit(0)
+        logged = False
+        need_close = False
+        while not logged and not need_close:
+            welcome = Ui_WelcomeDialog()
+            if welcome.exec_() == 0:
+                need_close = True
+                continue
             else:
-                dialog = Ui_RegDialog()
-                if dialog.exec_() == 0 and dialog.closeFlag:
-                    exit(0)
+                if welcome.newUser is False:
+                    dialog = Ui_AuthDialog()
+                    if dialog.exec_() == 0:
+                        need_close = True
+                        continue
 
-                while dialog.login is None or dialog.password is None or \
-                        not self.db.registration(dialog.login, dialog.password):
-                    QMessageBox.critical(self, 'Ошибка', 'Не удалось зарегистрироваться')
-                    if dialog.exec_() == 0 and dialog.closeFlag:
-                        exit(0)
+                    while dialog.l is None or dialog.p is None or not self.db.authorise(dialog.l, dialog.p):
+                        QMessageBox.critical(self, 'Ошибка', 'Не удалось авторизоваться')
+                        if dialog.exec_() == 0:
+                            need_close = True
+                            continue
+                else:
+                    dialog = Ui_RegDialog()
+                    if dialog.exec_() == 0 or dialog.closeFlag:
+                        need_close = True
+                        continue
+
+                    while dialog.login is None or dialog.password is None or \
+                            not self.db.registration(dialog.login, dialog.password):
+                        QMessageBox.critical(self, 'Ошибка', 'Не удалось зарегистрироваться')
+                        if dialog.exec_() == 0 or dialog.closeFlag:
+                            need_close = True
+                            continue
+            logged = self.db.is_logged()
+
+        if need_close:
+            self.deleteLater()
+            self.close()
 
         self.model = SerialsModel(self.db)
 
@@ -115,3 +128,6 @@ if __name__ == '__main__':
     w = MainWindow()
     w.show()
     app.exec_()
+
+# маскировака пароля
+# ппосле регистрации авторизация

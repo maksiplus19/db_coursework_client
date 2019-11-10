@@ -1,1 +1,1 @@
-pyuic5 RegDialog.ui -o RegDialog.py
+pyuic5 AuthDialog.ui -o AuthDialog.py

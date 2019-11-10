@@ -103,8 +103,10 @@ class DB:
     def registration(self, login: str, password: str):
         self.__query.exec(f"exec Registration '{login}', '{get_hash(password)}'")
         self.__query.next()
-        self.__id = self.__query.value(0)
-        return self.__id > 0
+        return self.__query.value(0) == 1
 
     def mark_status_episode(self, data):
         self.__query.exec(f'exec MarkEpisode {self.__id}, {data.id}')
+
+    def is_logged(self):
+        return self.__id > 0

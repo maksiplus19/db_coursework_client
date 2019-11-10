@@ -58,30 +58,3 @@ class Ui_WelcomeDialog(QDialog):
     def regClick(self):
         self.newUser = True
         self.accept()
-
-
-# from PyQt5.QtWidgets import QDialog
-#
-#
-# class Ui_WelcomeDialog(QDialog):
-#     def __init__(self):
-#         super().__init__()
-#         self.newUser = None
-#         self.setupUi()
-#
-#     def setupUi(self):
-#         self.setObjectName("WelcomeDialog")
-#         self.resize(381, 158)
-#         self.gridLayout = QtWidgets.QGridLayout(self)
-#         self.gridLayout.setObjectName("gridLayout")
-#         self.LogIn = QtWidgets.QPushButton(self)
-#         self.LogIn.setObjectName("LogIn")
-#         self.gridLayout.addWidget(self.LogIn, 1, 0, 1, 1)
-#         self.SignIn = QtWidgets.QPushButton(self)
-#         self.SignIn.setObjectName("SignIn")
-#         self.gridLayout.addWidget(self.SignIn, 0, 0, 1, 1)
-#
-#         self.retranslateUi(self)
-#         QtCore.QMetaObject.connectSlotsByName(self)
-#
-#         self.SignIn.clicked.connect(self.signInClick)
